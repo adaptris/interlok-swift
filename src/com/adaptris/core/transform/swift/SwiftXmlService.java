@@ -6,9 +6,9 @@
  */
 package com.adaptris.core.transform.swift;
 
-import net.sourceforge.wife.services.ConversionService;
-import net.sourceforge.wife.services.IConversionService;
-import net.sourceforge.wife.swift.model.SwiftMessage;
+import com.prowidesoftware.swift.io.ConversionService;
+import com.prowidesoftware.swift.io.IConversionService;
+import com.prowidesoftware.swift.model.SwiftMessage;
 
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.CoreException;

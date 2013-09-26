@@ -26,7 +26,9 @@
     <dependency org="com.adaptris" name="adp-core"  rev="${adp-core-version}" conf="compile->default" changing="true"/>
     <dependency org="com.adaptris" name="adp-stubs" rev="${adp-core-version}" changing="true" conf="test->default"/>
 	
-	  <dependency org="net.sourceforge.wife" name="wife" rev="5.1" conf="compile->default" />
+	<!--  This was previously known as net.sourceforge.wife -->
+	<dependency org="com.prowidesoftware.swift" name="swift" rev="7.0" conf="compile->default" />
+	
     <dependency org="org.apache.velocity" name="velocity" rev="1.7" transitive="false" conf="compile->default"/>
     <dependency org="org.slf4j" name="slf4j-api" rev="1.7.5" conf="compile->default" />
     <dependency org="org.slf4j" name="jcl-over-slf4j" rev="1.7.5" conf="compile->default" />
