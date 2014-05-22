@@ -6,25 +6,30 @@
  */
 package com.adaptris.core.transform.swift;
 
-import com.prowidesoftware.swift.io.ConversionService;
-import com.prowidesoftware.swift.io.IConversionService;
-import com.prowidesoftware.swift.model.SwiftMessage;
-
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.ServiceException;
 import com.adaptris.core.ServiceImp;
+import com.adaptris.util.license.License;
+import com.adaptris.util.license.License.LicenseType;
+import com.prowidesoftware.swift.io.ConversionService;
+import com.prowidesoftware.swift.io.IConversionService;
+import com.prowidesoftware.swift.model.SwiftMessage;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * Parse an incoming XML message and create an SWIFT representation of it.
- ** <p>
+ * 
+ * <p>
  * In the adapter configuration file this class is aliased as <b>xml-swift-service</b> which is the preferred alternative to the
  * fully qualified classname when building your configuration.
  * </p>
-
+ * <p>
+ * Requires a Standard License
+ * </p>
+ * 
  * @author ledwards
- *
+ * 
  */
 @XStreamAlias("xml-swift-service")
 public class XmlSwiftService extends ServiceImp {
@@ -61,4 +66,8 @@ public class XmlSwiftService extends ServiceImp {
   public void init() throws CoreException {
   }
 
+  @Override
+  public boolean isEnabled(License license) throws CoreException {
+    return license.isEnabled(LicenseType.Standard);
+  }
 }
