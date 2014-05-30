@@ -20,13 +20,8 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 /**
  * Parse an incoming SWIFT message and create an XML representation of it.
  * 
- * <p>
- * In the adapter configuration file this class is aliased as <b>swift-xml-service</b> which is the preferred alternative to the
- * fully qualified classname when building your configuration.
- * </p>
- * <p>
- * Requires a Standard License
- * </p>
+ * @config swift-xml-service
+ * @license STANDARD
  * 
  * @author stuellidge
  * 
