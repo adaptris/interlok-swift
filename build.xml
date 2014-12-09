@@ -13,8 +13,6 @@
 
   <target name="init" description="Initialisation">
 
-    <property name="manifest.title" value="Interlok Swift Transformations"/>
-    <property name="manifest.vendor" value="Adaptris Ltd"/>
     <property name="ivy.publish.revision" value="3.0-SNAPSHOT"/>  <!-- Version number of this artifact -->
     <property name="adp-core-version" value="3.0-SNAPSHOT"/>
 
@@ -81,20 +79,7 @@
 
   <target name="jar.resources" depends="prepare">
     <!-- build the manifest file -->
-    <property name="manifest.jar.version" value="${jar.version}"/>
-    <manifest file="${build.dir}/Manifest.mf">
-      <attribute name="Manifest-Version" value="1.0"/>
-      <attribute name="Build-Version" value="${manifest.jar.version}"/>
-      <attribute name="Built-By" value="${user.name}"/>
-      <section name="com/adaptris/core/transform">
-        <attribute name="Specification-Title" value="${manifest.title}"/>
-        <attribute name="Specification-Version" value="${ivy.publish.revision}"/>
-        <attribute name="Specification-Vendor" value="${manifest.vendor}"/>
-        <attribute name="Implementation-Version" value="${ivy.publish.revision}"/>
-        <attribute name="Implementation-Title" value="${manifest.title}"/>
-        <attribute name="Implementation-Vendor" value="${manifest.vendor}"/>
-      </section>
-    </manifest>
+    <adapter:create-manifest file="${build.dir}/Manifest.mf" title="Interlok Swift Transformations"/>
   </target>
 
   <target name="jar" depends="compile, jar.resources" description="Build a jar file">
