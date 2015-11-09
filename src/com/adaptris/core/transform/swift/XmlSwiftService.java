@@ -9,9 +9,10 @@ package com.adaptris.core.transform.swift;
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.ServiceException;
-import com.adaptris.core.ServiceImp;
-import com.adaptris.util.license.License;
-import com.adaptris.util.license.License.LicenseType;
+import com.adaptris.core.licensing.License;
+import com.adaptris.core.licensing.License.LicenseType;
+import com.adaptris.core.licensing.LicenseChecker;
+import com.adaptris.core.licensing.LicensedService;
 import com.prowidesoftware.swift.io.ConversionService;
 import com.prowidesoftware.swift.io.IConversionService;
 import com.prowidesoftware.swift.model.SwiftMessage;
@@ -27,7 +28,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * 
  */
 @XStreamAlias("xml-swift-service")
-public class XmlSwiftService extends ServiceImp {
+public class XmlSwiftService extends LicensedService {
 
   /**
    * Service method to parse an incoming XML message and create an SWIFT
@@ -49,20 +50,21 @@ public class XmlSwiftService extends ServiceImp {
     }
   }
 
-  /**
-   * @see com.adaptris.core.AdaptrisComponent#close()
-   */
-  public void close() {
-  }
-
-  /**
-   * @see com.adaptris.core.AdaptrisComponent#init()
-   */
-  public void init() throws CoreException {
+  @Override
+  protected void prepareService() throws CoreException {
+    LicenseChecker.newChecker().checkLicense(this);
   }
 
   @Override
-  public boolean isEnabled(License license) throws CoreException {
+  public boolean isEnabled(License license) {
     return license.isEnabled(LicenseType.Standard);
+  }
+
+  @Override
+  protected void closeService() {
+  }
+
+  @Override
+  protected void initService() throws CoreException {
   }
 }
