@@ -6,6 +6,8 @@
  */
 package com.adaptris.core.transform.swift;
 
+import com.adaptris.annotation.AdapterComponent;
+import com.adaptris.annotation.ComponentProfile;
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.ServiceException;
@@ -28,6 +30,8 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * 
  */
 @XStreamAlias("xml-swift-service")
+@AdapterComponent
+@ComponentProfile(summary = "Transform a XML message to SWIFT", tag = "service,transform,xml,swift")
 public class XmlSwiftService extends LicensedService {
 
   /**
