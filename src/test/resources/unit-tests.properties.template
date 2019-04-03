@@ -3,7 +3,5 @@
 # the prefix junit. is used to allow easy filtering when writing out the properties
 # at jar creation time.
 
-junit.SampleConfigCase.baseDir=${build.dir}/example-xml
-
-junit.tmp.dir=${build.dir}/tmp
-junit.test.classes=**/**/**/**/*Test*.java
+SampleConfigCase.baseDir=@BUILD_DIR@/examples
+tmp.dir=@BUILD_DIR@/tmp
