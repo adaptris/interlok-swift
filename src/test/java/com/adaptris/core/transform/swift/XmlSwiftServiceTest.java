@@ -65,11 +65,11 @@ public class XmlSwiftServiceTest extends TransformServiceExample {
     AdaptrisMessage msg = AdaptrisMessageFactory.getDefaultInstance()
         .newMessage(SWIFT_XML);
     service.doService(msg);
-    System.out.println(msg.getStringPayload());
-    assertTrue("Must contain block1", msg.getStringPayload().contains("{1:"));
-    assertTrue("Must contain block2", msg.getStringPayload().contains("{2:"));
-    assertTrue("Must contain block3", msg.getStringPayload().contains("{3:"));
-    assertTrue("Must contain block4", msg.getStringPayload().contains("{4:"));
+    System.out.println(msg.getContent());
+    assertTrue("Must contain block1", msg.getContent().contains("{1:"));
+    assertTrue("Must contain block2", msg.getContent().contains("{2:"));
+    assertTrue("Must contain block3", msg.getContent().contains("{3:"));
+    assertTrue("Must contain block4", msg.getContent().contains("{4:"));
   }
 
   /**

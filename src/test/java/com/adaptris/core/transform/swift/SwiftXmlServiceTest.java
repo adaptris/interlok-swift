@@ -8,18 +8,15 @@ package com.adaptris.core.transform.swift;
 
 import java.io.IOException;
 import java.io.StringReader;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.AdaptrisMessageFactory;
 import com.adaptris.core.ServiceException;
@@ -79,13 +76,13 @@ public class SwiftXmlServiceTest extends TransformServiceExample {
     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
     DocumentBuilder db = dbf.newDocumentBuilder();
     Document doc = db.parse(new InputSource(new StringReader(msg
-        .getStringPayload())));
+        .getContent())));
 
     XPathFactory xpf = XPathFactory.newInstance();
     XPath xp = xpf.newXPath();
     String item = xp.evaluate(
         "count(/message/*[starts-with(name(.), 'block')])", doc);
-    System.out.println(msg.getStringPayload());
+    System.out.println(msg.getContent());
     System.out.println(item);
 
     assertEquals("Should be 4 blocks returned", 4, Integer.parseInt(item));

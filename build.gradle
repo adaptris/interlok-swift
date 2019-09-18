@@ -6,6 +6,7 @@ plugins {
   id 'maven'
   id 'maven-publish'
   id 'jacoco'
+  id 'eclipse'
   // Manage optional dependencies in maven pom.
   id 'nebula.optional-base' version '4.0.1'
   id 'com.github.spotbugs' version '1.6.10'
@@ -74,13 +75,6 @@ def versionDir = "$buildDir/version"
 repositories {
   mavenCentral()
   maven { url "$defaultNexusRepo" }
-  maven {
-      credentials {
-        username repoUsername
-        password repoPassword
-      }
-      url "$nexusBaseUrl/content/groups/private"
-    }
   maven { url "$nexusBaseUrl/content/groups/public" }
   maven { url "$nexusBaseUrl/content/groups/interlok" }
 }
@@ -110,25 +104,22 @@ configurations.all {
 dependencies {
   compile ("com.adaptris:interlok-core:$interlokCoreVersion") { changing= true}
   compile ("com.adaptris:interlok-common:$interlokCoreVersion") { changing= true}
-  compile ("com.adaptris:interlok-licensing:$interlokCoreVersion") { changing= true}
 
   compile ("org.slf4j:slf4j-api:$slf4jVersion")
   compile ("org.slf4j:jcl-over-slf4j:$slf4jVersion")
-  compile ("com.prowidesoftware.swift:swift:7.0")
+  compile ("com.prowidesoftware:pw-swift-core:SRU2018-7.10.4")
 
   annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
   umlDoclet("nl.talsmasoftware:umldoclet:1.0.16")
 
   testCompile ('junit:junit:4.12')
   testCompile ("com.adaptris:interlok-stubs:$interlokCoreVersion") { changing= true}
-  testCompile ("com.adaptris:interlok-licensing-stub:$interlokCoreVersion") { changing= true}
   testCompile ("org.hamcrest:hamcrest-core:1.3")
   testCompile ("org.mockito:mockito-all:1.10.19")
 
   javadoc("com.adaptris:interlok-core-apt:$interlokCoreVersion") { changing= true}
   offlineJavadocPackages ("com.adaptris:interlok-core:$interlokCoreVersion:javadoc@jar") { changing= true}
   offlineJavadocPackages ("com.adaptris:interlok-common:$interlokCoreVersion:javadoc@jar") { changing= true}
-  offlineJavadocPackages ("com.adaptris:interlok-licensing:$interlokCoreVersion:javadoc@jar") { changing= true}
 
 }
 
@@ -198,7 +189,6 @@ javadoc {
   configure(options) {
     options.linksOffline(interlokJavadocs, offlineJavadocPackageDir.getCanonicalPath() + "/interlok-core-$interlokCoreVersion-javadoc.jar")
     options.linksOffline(interlokCommonJavadocs, offlineJavadocPackageDir.getCanonicalPath() + "/interlok-common-$interlokCoreVersion-javadoc.jar")
-    options.linksOffline(interlokLicenseJavadocs, offlineJavadocPackageDir.getCanonicalPath() + "/interlok-licensing-$interlokCoreVersion-javadoc.jar")
     taglets = ["com.adaptris.taglet.ConfigTaglet", "com.adaptris.taglet.LicenseTaglet"]
     options.addStringOption "tagletpath", configurations.javadoc.asPath
     title= componentName
@@ -217,7 +207,6 @@ task umlJavadoc(type: Javadoc) {
   configure(options) {
     options.linksOffline(interlokJavadocs, offlineJavadocPackageDir.getCanonicalPath() + "/interlok-core-$interlokCoreVersion-javadoc.jar")
     options.linksOffline(interlokCommonJavadocs, offlineJavadocPackageDir.getCanonicalPath() + "/interlok-common-$interlokCoreVersion-javadoc.jar")
-    options.linksOffline(interlokLicenseJavadocs, offlineJavadocPackageDir.getCanonicalPath() + "/interlok-licensing-$interlokCoreVersion-javadoc.jar")
     taglets = ["com.adaptris.taglet.ConfigTaglet", "com.adaptris.taglet.LicenseTaglet"]
     options.addStringOption "tagletpath", configurations.javadoc.asPath
     options.docletpath = configurations.umlDoclet.files.asType(List)
@@ -243,7 +232,7 @@ task umlJavadoc(type: Javadoc) {
 
 
 jacoco {
-  toolVersion="0.8.1"
+  toolVersion="0.8.3"
 }
 
 jacocoTestReport {
@@ -263,10 +252,15 @@ task examplesJar(type: Jar, dependsOn: test) {
   from new File(buildDir, '/examples')
 }
 
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
 
 artifacts {
   archives javadocJar
   archives examplesJar
+  archives sourcesJar  
 }
 
 publishing {
@@ -276,14 +270,14 @@ publishing {
 
       artifact javadocJar { classifier "javadoc" }
       artifact examplesJar { classifier "examples" }
-
+      artifact sourcesJar { classifier "sources" }
       pom.withXml {
         asNode().appendNode("name", componentName)
         asNode().appendNode("description", "Handle transforms to and from the SWIFT format")
         def properties = asNode().appendNode("properties")
         properties.appendNode("target", "3.8.0+")
         properties.appendNode("tags", "swift,transform")
-        properties.appendNode("license", "true")
+        properties.appendNode("license", "false")
       }
     }
   }
