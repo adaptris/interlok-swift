@@ -15,19 +15,16 @@
  *******************************************************************************/
 package com.adaptris.core.transform.swift;
 
-import java.io.IOException;
 import java.io.StringReader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.AdaptrisMessageFactory;
+import com.adaptris.core.ServiceCase;
 import com.adaptris.core.ServiceException;
 import com.adaptris.core.transform.TransformServiceExample;
 
@@ -64,38 +61,34 @@ public class SwiftXmlServiceTest extends TransformServiceExample {
     super(testName);
   }
 
-  /**
-   * Test method for
-   * {@link com.adaptris.core.transform.SwiftXmlService#doService(com.adaptris.core.AdaptrisMessage)}
-   * .
-   *
-   * @throws ServiceException
-   * @throws XPathExpressionException
-   * @throws ParserConfigurationException
-   * @throws IOException
-   * @throws SAXException
-   */
-  public void testDoService() throws ServiceException,
-      XPathExpressionException, ParserConfigurationException, SAXException,
-      IOException {
+  public void testDoService() throws Exception {
     SwiftXmlService service = new SwiftXmlService();
-    AdaptrisMessage msg = AdaptrisMessageFactory.getDefaultInstance()
-        .newMessage(SWIFT);
-    service.doService(msg);
+    AdaptrisMessage msg = AdaptrisMessageFactory.getDefaultInstance().newMessage(SWIFT);
+    ServiceCase.execute(service, msg);
     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
     DocumentBuilder db = dbf.newDocumentBuilder();
-    Document doc = db.parse(new InputSource(new StringReader(msg
-        .getContent())));
+    Document doc = db.parse(new InputSource(new StringReader(msg.getContent())));
 
     XPathFactory xpf = XPathFactory.newInstance();
     XPath xp = xpf.newXPath();
-    String item = xp.evaluate(
-        "count(/message/*[starts-with(name(.), 'block')])", doc);
+    String item = xp.evaluate("count(/message/*[starts-with(name(.), 'block')])", doc);
     System.out.println(msg.getContent());
     System.out.println(item);
 
     assertEquals("Should be 4 blocks returned", 4, Integer.parseInt(item));
+
   }
+
+  public void testDoService_Fails() throws Exception {
+    SwiftXmlService service = new SwiftXmlService();
+    try {
+      ServiceCase.execute(service, null);
+      fail();
+    } catch (ServiceException expected) {
+
+    }
+  }
+
 
   /**
    * @see com.adaptris.core.ExampleConfigCase#retrieveObjectForSampleConfig()

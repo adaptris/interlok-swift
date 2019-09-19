@@ -21,6 +21,7 @@ import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.ServiceException;
 import com.adaptris.core.ServiceImp;
+import com.adaptris.core.util.ExceptionHelper;
 import com.prowidesoftware.swift.io.ConversionService;
 import com.prowidesoftware.swift.model.SwiftMessage;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -29,8 +30,6 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * Parse an incoming SWIFT message and create an XML representation of it.
  * 
  * @config swift-xml-service
- * @license STANDARD
- * 
  * @author stuellidge
  * 
  */
@@ -52,11 +51,8 @@ public class SwiftXmlService extends ServiceImp {
       SwiftMessage swift = service.getMessageFromFIN(msg.getContent());
       msg.setContent(service.getXml(swift), msg.getContentEncoding());
     }
-    catch (Throwable t) {
-      // log.error("Failed to process incoming payload as a SWIFT FIN message",
-      // t);
-      throw new ServiceException(
-          "Failed to process incoming payload as a SWIFT FIN message", t);
+    catch (Exception e) {
+      throw ExceptionHelper.wrapServiceException("Failed to process incoming payload as a SWIFT FIN message", e);
     }
   }
 

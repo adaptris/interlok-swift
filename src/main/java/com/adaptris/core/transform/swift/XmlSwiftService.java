@@ -27,6 +27,7 @@ import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.CoreException;
 import com.adaptris.core.ServiceException;
 import com.adaptris.core.ServiceImp;
+import com.adaptris.core.util.ExceptionHelper;
 import com.prowidesoftware.swift.io.ConversionService;
 import com.prowidesoftware.swift.io.IConversionService;
 import com.prowidesoftware.swift.model.SwiftMessage;
@@ -36,8 +37,6 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * Parse an incoming XML message and create an SWIFT representation of it.
  * 
  * @config xml-swift-service
- * @license STANDARD
- * 
  * @author ledwards
  * 
  */
@@ -60,10 +59,8 @@ public class XmlSwiftService extends ServiceImp {
       String fin = service.getFIN(swift);
       msg.setContent(fin, msg.getContentEncoding());
     }
-    catch (Throwable t) {
-      // log.error("Unable to create SWIFT FIN message from XML", t);
-      throw new ServiceException("Unable to create SWIFT FIN message from XML",
-          t);
+    catch (Exception e) {
+      throw ExceptionHelper.wrapServiceException("Unable to create SWIFT FIN message from XML", e);
     }
   }
 

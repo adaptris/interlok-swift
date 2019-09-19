@@ -17,6 +17,7 @@ package com.adaptris.core.transform.swift;
 
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.AdaptrisMessageFactory;
+import com.adaptris.core.ServiceCase;
 import com.adaptris.core.ServiceException;
 import com.adaptris.core.transform.TransformServiceExample;
 
@@ -69,16 +70,26 @@ public class XmlSwiftServiceTest extends TransformServiceExample {
   }
 
   // @Test
-  public void testDoService() throws ServiceException {
+  public void testDoService() throws Exception {
     XmlSwiftService service = new XmlSwiftService();
     AdaptrisMessage msg = AdaptrisMessageFactory.getDefaultInstance()
         .newMessage(SWIFT_XML);
-    service.doService(msg);
+    ServiceCase.execute(service, msg);
     System.out.println(msg.getContent());
     assertTrue("Must contain block1", msg.getContent().contains("{1:"));
     assertTrue("Must contain block2", msg.getContent().contains("{2:"));
     assertTrue("Must contain block3", msg.getContent().contains("{3:"));
     assertTrue("Must contain block4", msg.getContent().contains("{4:"));
+  }
+
+  public void testDoService_Fails() throws Exception {
+    XmlSwiftService service = new XmlSwiftService();
+    try {
+      ServiceCase.execute(service, null);
+      fail();
+    } catch (ServiceException expected) {
+
+    }
   }
 
   /**
