@@ -9,7 +9,7 @@ plugins {
   id 'eclipse'
   // Manage optional dependencies in maven pom.
   id 'nebula.optional-base' version '5.0.3'
-  id 'com.github.spotbugs' version '2.0.0'
+  id 'com.github.spotbugs' version '3.0.0'
 }
 
 ext {
@@ -29,7 +29,7 @@ ext {
   componentName='Interlok/SWIFT transforms'
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
-  slf4jVersion = '1.7.28'
+  slf4jVersion = '1.7.29'
   log4j2Version = '2.12.1'
 }
 
@@ -66,6 +66,24 @@ ext.hasGraphViz = { ->
   }
 }
 
+ext.gitBranchNameOrTimestamp = { branchName ->
+  if (branchName.equals("HEAD") || branchName.equals("develop") || branchName.startsWith("release")) {
+    return new Date().format('HH:mm:ss z');
+  }
+  return branchName;
+}
+
+ext.buildInfo = { ->
+   new ByteArrayOutputStream().withStream { os ->
+      exec {
+        executable = "git"
+        args = ["rev-parse", "--abbrev-ref", "HEAD"]
+        standardOutput = os
+      }
+      def branchName = os.toString().replaceAll("\r", "").replaceAll("\n", "").trim();
+      return gitBranchNameOrTimestamp(branchName);
+    }
+}
 
 sourceCompatibility = 1.8
 group   = 'com.adaptris'
@@ -107,14 +125,14 @@ dependencies {
 
   compile ("org.slf4j:slf4j-api:$slf4jVersion")
   compile ("org.slf4j:jcl-over-slf4j:$slf4jVersion")
-  compile ("com.prowidesoftware:pw-swift-core:SRU2018-7.10.4")
+  compile ("com.prowidesoftware:pw-swift-core:SRU2019-8.0.1")
 
   annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
   umlDoclet("nl.talsmasoftware:umldoclet:1.1.4")
 
   testCompile ('junit:junit:4.12')
   testCompile ("com.adaptris:interlok-stubs:$interlokCoreVersion") { changing= true}
-  testCompile ("org.hamcrest:hamcrest-core:2.1")
+  testCompile ("org.hamcrest:hamcrest-core:2.2")
   testCompile ("org.mockito:mockito-all:1.10.19")
 
   javadoc("com.adaptris:interlok-core-apt:$interlokCoreVersion") { changing= true}
@@ -169,6 +187,7 @@ task generateVersion {
       entry(key: 'artifactId', value: project.name)
       entry(key: 'build.version', value: project.version)
       entry(key: 'build.date', value: new Date().format('yyyy-MM-dd'))
+      entry(key: 'build.info', value: buildInfo())
     }
   }
 }
@@ -228,11 +247,6 @@ task umlJavadoc(type: Javadoc) {
     options.addStringOption "umlIncludeProtectedInnerClasses","false"
     title= componentName
   }
-}
-
-
-jacoco {
-  toolVersion="0.8.3"
 }
 
 jacocoTestReport {
