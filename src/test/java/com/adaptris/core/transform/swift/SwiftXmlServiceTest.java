@@ -15,11 +15,14 @@
  *******************************************************************************/
 package com.adaptris.core.transform.swift;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import java.io.StringReader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import com.adaptris.core.AdaptrisMessage;
@@ -57,10 +60,11 @@ public class SwiftXmlServiceTest extends TransformServiceExample {
   /**
    *
    */
-  public SwiftXmlServiceTest(String testName) {
-    super(testName);
+  public SwiftXmlServiceTest() {
+    super();
   }
 
+  @Test
   public void testDoService() throws Exception {
     SwiftXmlService service = new SwiftXmlService();
     AdaptrisMessage msg = AdaptrisMessageFactory.getDefaultInstance().newMessage(SWIFT);
@@ -79,6 +83,7 @@ public class SwiftXmlServiceTest extends TransformServiceExample {
 
   }
 
+  @Test
   public void testDoService_Fails() throws Exception {
     SwiftXmlService service = new SwiftXmlService();
     try {
@@ -96,6 +101,11 @@ public class SwiftXmlServiceTest extends TransformServiceExample {
   @Override
   protected Object retrieveObjectForSampleConfig() {
     return new SwiftXmlService();
+  }
+
+  @Override
+  public boolean isAnnotatedForJunit4() {
+    return true;
   }
 
 }

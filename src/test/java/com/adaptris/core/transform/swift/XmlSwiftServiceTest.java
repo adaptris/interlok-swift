@@ -15,6 +15,9 @@
  *******************************************************************************/
 package com.adaptris.core.transform.swift;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import org.junit.Test;
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.AdaptrisMessageFactory;
 import com.adaptris.core.ServiceCase;
@@ -65,11 +68,11 @@ public class XmlSwiftServiceTest extends TransformServiceExample {
   /**
    *
    */
-  public XmlSwiftServiceTest(String testName) {
-    super(testName);
+  public XmlSwiftServiceTest() {
+    super();
   }
 
-  // @Test
+  @Test
   public void testDoService() throws Exception {
     XmlSwiftService service = new XmlSwiftService();
     AdaptrisMessage msg = AdaptrisMessageFactory.getDefaultInstance()
@@ -82,6 +85,7 @@ public class XmlSwiftServiceTest extends TransformServiceExample {
     assertTrue("Must contain block4", msg.getContent().contains("{4:"));
   }
 
+  @Test
   public void testDoService_Fails() throws Exception {
     XmlSwiftService service = new XmlSwiftService();
     try {
@@ -98,6 +102,11 @@ public class XmlSwiftServiceTest extends TransformServiceExample {
   @Override
   protected Object retrieveObjectForSampleConfig() {
     return new XmlSwiftService();
+  }
+
+  @Override
+  public boolean isAnnotatedForJunit4() {
+    return true;
   }
 
 }
