@@ -130,7 +130,7 @@ dependencies {
 
   compile ("org.slf4j:slf4j-api:$slf4jVersion")
   compile ("org.slf4j:jcl-over-slf4j:$slf4jVersion")
-  compile ("com.prowidesoftware:pw-swift-core:SRU2019-8.0.1")
+  compile ("com.prowidesoftware:pw-swift-core:SRU2019-8.0.2")
 
   annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
   umlDoclet("nl.talsmasoftware:umldoclet:1.1.4")
