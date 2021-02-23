@@ -29,7 +29,7 @@ ext {
   interlokLicenseJavadocs= project.hasProperty('interlokLicenseJavadocs') ? project.getProperty('interlokLicenseJavadocs') : javadocsBaseUrl + "/interlok-licensing/" + interlokCoreVersion
 
   componentDesc='Handle transforms to and from the SWIFT format'
-  componentName='Interlok Transforms/SWIFT'
+  componentName='Interlok Transform/SWIFT'
 
   organizationName = "Adaptris Ltd"
   organizationUrl = "http://interlok.adaptris.net"
