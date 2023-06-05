@@ -19,7 +19,7 @@ import com.prowidesoftware.swift.io.ConversionService;
 import com.prowidesoftware.swift.io.IConversionService;
 import com.prowidesoftware.swift.model.SwiftMessage;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 public class SwiftTest {
