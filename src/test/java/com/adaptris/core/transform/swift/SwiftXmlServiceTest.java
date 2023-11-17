@@ -15,21 +15,25 @@
  *******************************************************************************/
 package com.adaptris.core.transform.swift;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.StringReader;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
+
 import com.adaptris.core.AdaptrisMessage;
 import com.adaptris.core.AdaptrisMessageFactory;
-import com.adaptris.core.ServiceCase;
 import com.adaptris.core.ServiceException;
-import com.adaptris.core.transform.TransformServiceExample;
+import com.adaptris.interlok.junit.scaffolding.services.ExampleServiceCase;
+import com.adaptris.interlok.junit.scaffolding.services.TransformServiceExample;
 
 /**
  * @author stuellidge
@@ -37,38 +41,16 @@ import com.adaptris.core.transform.TransformServiceExample;
  */
 public class SwiftXmlServiceTest extends TransformServiceExample {
 
-	String SWIFT = "{1:F01BANKDEFMAXXX2039063581}\r\n" +
-	  "{2:O1031609050901BANKDEFXAXXX89549829458949811609N}\r\n" +
-	  "{3:{108:00750532785315}}{4:\r\n" +
-	  ":20:007505327853\r\n" +
-	  ":23B:CRED\r\n" +
-	  ":32A:050902JPY3520000,\r\n" +
-	  ":33B:JPY3520000,\r\n" +
-	  ":50K:EUROXXXEI\r\n" +
-	  ":52A:FEBXXXM1\r\n" +
-	  ":53A:MHCXXXJT\r\n" +
-	  ":54A:FOOBICXX\r\n" +
-	  ":59:/13212312\r\n" +
-	  "RECEIVER NAME S.A\r\n" +
-	  ":70:FUTURES\r\n" +
-	  ":71A:SHA\r\n" +
-	  ":71F:EUR12,00\r\n" +
-	  ":71F:EUR2,34\r\n" +
-	  "-} \r\n";
-
-
-  /**
-   *
-   */
-  public SwiftXmlServiceTest() {
-    super();
-  }
+  String SWIFT = "{1:F01BANKDEFMAXXX2039063581}\r\n" + "{2:O1031609050901BANKDEFXAXXX89549829458949811609N}\r\n"
+      + "{3:{108:00750532785315}}{4:\r\n" + ":20:007505327853\r\n" + ":23B:CRED\r\n" + ":32A:050902JPY3520000,\r\n" + ":33B:JPY3520000,\r\n"
+      + ":50K:EUROXXXEI\r\n" + ":52A:FEBXXXM1\r\n" + ":53A:MHCXXXJT\r\n" + ":54A:FOOBICXX\r\n" + ":59:/13212312\r\n"
+      + "RECEIVER NAME S.A\r\n" + ":70:FUTURES\r\n" + ":71A:SHA\r\n" + ":71F:EUR12,00\r\n" + ":71F:EUR2,34\r\n" + "-} \r\n";
 
   @Test
   public void testDoService() throws Exception {
     SwiftXmlService service = new SwiftXmlService();
     AdaptrisMessage msg = AdaptrisMessageFactory.getDefaultInstance().newMessage(SWIFT);
-    ServiceCase.execute(service, msg);
+    ExampleServiceCase.execute(service, msg);
     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
     DocumentBuilder db = dbf.newDocumentBuilder();
     Document doc = db.parse(new InputSource(new StringReader(msg.getContent())));
@@ -79,21 +61,19 @@ public class SwiftXmlServiceTest extends TransformServiceExample {
     System.out.println(msg.getContent());
     System.out.println(item);
 
-    assertEquals("Should be 4 blocks returned", 4, Integer.parseInt(item));
-
+    assertEquals(4, Integer.parseInt(item), "Should be 4 blocks returned");
   }
 
   @Test
   public void testDoService_Fails() throws Exception {
     SwiftXmlService service = new SwiftXmlService();
     try {
-      ServiceCase.execute(service, null);
+      ExampleServiceCase.execute(service, null);
       fail();
     } catch (ServiceException expected) {
 
     }
   }
-
 
   /**
    * @see com.adaptris.core.ExampleConfigCase#retrieveObjectForSampleConfig()
@@ -101,11 +81,6 @@ public class SwiftXmlServiceTest extends TransformServiceExample {
   @Override
   protected Object retrieveObjectForSampleConfig() {
     return new SwiftXmlService();
-  }
-
-  @Override
-  public boolean isAnnotatedForJunit4() {
-    return true;
   }
 
 }

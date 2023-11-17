@@ -28,10 +28,10 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * Parse an incoming SWIFT message and create an XML representation of it.
- * 
+ *
  * @config swift-xml-service
  * @author stuellidge
- * 
+ *
  */
 @XStreamAlias("swift-xml-service")
 @AdapterComponent
@@ -39,8 +39,8 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class SwiftXmlService extends ServiceImp {
 
   /**
-   * Service method to parse an incoming SWIFT message and create an XML
-   * representation of it. Limited support for character encoding - UTF-8 only.
+   * Service method to parse an incoming SWIFT message and create an XML representation of it. Limited support for character encoding -
+   * UTF-8 only.
    *
    * @see com.adaptris.core.Service#doService(com.adaptris.core.AdaptrisMessage)
    */
@@ -50,8 +50,7 @@ public class SwiftXmlService extends ServiceImp {
       ConversionService service = new ConversionService();
       SwiftMessage swift = service.getMessageFromFIN(msg.getContent());
       msg.setContent(service.getXml(swift), msg.getContentEncoding());
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       throw ExceptionHelper.wrapServiceException("Failed to process incoming payload as a SWIFT FIN message", e);
     }
   }
@@ -67,4 +66,5 @@ public class SwiftXmlService extends ServiceImp {
   @Override
   public void prepare() throws CoreException {
   }
+
 }
