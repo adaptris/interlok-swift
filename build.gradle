@@ -151,7 +151,7 @@ dependencies {
 
   implementation ("org.slf4j:slf4j-api:$slf4jVersion")
   implementation ("org.slf4j:jcl-over-slf4j:$slf4jVersion")
-  implementation ("com.prowidesoftware:pw-swift-core:SRU2022-9.3.15")
+  implementation ("com.prowidesoftware:pw-swift-core:SRU2023-10.1.16")
 
   annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
   umlDoclet("nl.talsmasoftware:umldoclet:2.2.0")
